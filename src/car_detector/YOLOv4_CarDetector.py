@@ -140,6 +140,7 @@ if __name__ == "__main__":
         device="cuda:0",
         image_size=416,
         conf_thresh=0.4,
-        nms_thresh=0.6
+        nms_thresh=0.6,
+        size_threshold=(0, 0)
     ))
     detector = CarDetector(config)
