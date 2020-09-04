@@ -110,6 +110,7 @@ class CarDetector:
                 keep = nms_cpu(ll_box_array, ll_max_conf, self.nms_thresh)
                 
                 if (keep.size > 0):
+                    ll_box_array = np.clip(ll_box_array[keep, :], 0.0, 1.0)
                     ll_box_array = ll_box_array[keep, :]
                     ll_max_conf = ll_max_conf[keep]
                     ll_max_id = ll_max_id[keep]
