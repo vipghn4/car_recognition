@@ -24,11 +24,15 @@ class CarDetector:
                 .image_size (int): Input size of model, i.e. (image_size, image_size)
                 .conf_thresh (float): Threshold for bbox confidence score
                 .nms_thresh (float): Threshold for NMS
+                .size_threshold (tuple(int)): Tuple of two integers, i.e. (w, h)
+                    Any bounding box, whose width is less than w, or height is less
+                    than h, is discarded
         """
         self.n_classes = config.n_classes
         self.image_size = config.image_size
         self.conf_thresh = config.conf_thresh 
         self.nms_thresh = config.nms_thresh
+        self.size_threshold = size_threshold
         self.device = config.device
 
         self.model = self.__load_model(
@@ -117,13 +121,14 @@ class CarDetector:
         return bboxes_batch[0]
 
     def __filter_bboxes(self, image, boxes):
-        # _, _, h, w = image.shape
-        # boxes = np.array(boxes)
-        # hbox = (boxes[:, 3] - boxes[:, 1]) * h
-        # wbox = (boxes[:, 2] - boxes[:, 0]) * w
-        
-        # TODO:
-        # 1. Filter out too small bboxes
+        _, _, h, w = image.shape
+        boxes = np.array(boxes)
+        hbox = (boxes[:, 3] - boxes[:, 1]) * h
+        wbox = (boxes[:, 2] - boxes[:, 0]) * w
+        boxes = boxes[np.logical_and(
+            hbox >= self.size_threshold[1],
+            wbox >= self.size_threshold[0]
+        )]
         return boxes
 
 
