@@ -32,7 +32,7 @@ class CarDetector:
         self.image_size = config.image_size
         self.conf_thresh = config.conf_thresh 
         self.nms_thresh = config.nms_thresh
-        self.size_threshold = size_threshold
+        self.size_threshold = config.size_threshold
         self.device = config.device
 
         self.model = self.__load_model(
